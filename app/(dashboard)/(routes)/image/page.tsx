@@ -1,15 +1,15 @@
 "use client";
 import Heading from "@/components/Heading";
-import { Code } from "lucide-react";
+import { Download, ImageIcon, MessageSquare } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { formSchema } from "./constants";
+import { amountOptions, formSchema, resolutionOptions } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import ReactMarkdown from "react-markdown";
+
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Empty } from "@/components/empty";
@@ -18,16 +18,21 @@ import Loader from "@/components/loader";
 import { cn } from "@/lib/utils";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
+import { Select, SelectContent, SelectItem } from "@/components/ui/select";
+import { SelectTrigger, SelectValue } from "@radix-ui/react-select";
+import { Card, CardFooter } from "@/components/ui/card";
+import Image from "next/image";
 
-const CodePage = () => {
+const ImagePage = () => {
   const router = useRouter();
-  const [messages, setMessages] = useState<
-    OpenAI.Chat.CreateChatCompletionRequestMessage[]
-  >([]);
+  const [Images, setImages] = useState<string[]>([]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",
+      amount: "1",
+      resolution: "512x512",
     },
   });
 
@@ -35,15 +40,12 @@ const CodePage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // console.log(values);
     try {
-      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = {
-        role: "user",
-        content: values.prompt,
-      };
-      const newMessages = [...messages, userMessage];
-      const response = await axios.post("/api/code", {
-        messages: newMessages,
-      });
-      setMessages((current) => [...current, userMessage, response.data]);
+      setImages([]);
+
+      const response = await axios.post("/api/image", values);
+      const urls = response.data.map((image: { url: string }) => image.url);
+      setImages(urls);
+
       form.reset();
     } catch (error: any) {
       // TODO:
@@ -56,11 +58,11 @@ const CodePage = () => {
   return (
     <div>
       <Heading
-        title="Code Generation"
-        description="Advance Code Generation form input text "
-        icon={Code}
-        iconColor="text-sky-500"
-        bgColor="bg-sky-500/10"
+        title="Image Generation"
+        description="Prompt to Image"
+        icon={ImageIcon}
+        iconColor="text-pink-500"
+        bgColor="bg-pink-500/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -68,7 +70,7 @@ const CodePage = () => {
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className=" rounded-2xl
-              border-2 
+              border
               border-violet-500/20
               w-full 
                 p-4 
@@ -83,15 +85,69 @@ const CodePage = () => {
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className=" col-span-12 lg:col-span-10 ">
+                  <FormItem className=" col-span-12 lg:col-span-6 ">
                     <FormControl className="m-0 p-0 ">
                       <Input
                         className=" border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="simple input form using nextjs with shadcn-ui"
+                        placeholder="A picture of moon light in winter"
                         {...field}
                       />
                     </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 mt-2 lg:col-span-2">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {amountOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="resolution"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 mt-2 lg:col-span-2">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {resolutionOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -110,41 +166,27 @@ const CodePage = () => {
               <Loader />
             </div>
           )}
-          {messages.length === 0 && !isLoading && (
-            <Empty label="There is no code Generated here" />
+          {Images.length === 0 && !isLoading && (
+            <Empty label="There is no Images here" />
           )}
 
-          <div className="flex flex-col-reverse gap-y-r">
-            {messages.map((message) => (
-              <div
-                key={message.role}
-                className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  message.role === "user"
-                    ? "bg-white border border-black/10"
-                    : "bg-muted "
-                )}
-              >
-                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <ReactMarkdown
-                  components={{
-                    pre: ({ node, ...props }) => (
-                      <div className=" overflow-auto w-full m-y bg-cyan-800/10 p-3 rounded-lg">
-                        <pre {...props} />
-                      </div>
-                    ),
-                    code: ({ node, ...props }) => (
-                      <code
-                        className=" bg-cyan-700/10 rounded-lg p-1"
-                        {...props}
-                      />
-                    ),
-                  }}
-                  className="tex-sm overflow-hidden leading-7"
-                >
-                  {message.content}
-                </ReactMarkdown>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+            {Images.map((src) => (
+              <Card key={src} className=" rounded-lg overflow-hidden">
+                <div className="relative aspect-square">
+                  <Image alt="Image" fill src={src} />
+                </div>
+                <CardFooter className="p-3">
+                  <Button
+                    onClick={() => window.open(src)}
+                    variant="secondary"
+                    className="w-full"
+                  >
+                    <Download className="h-3 w-3 mr-2" />
+                    Download
+                  </Button>
+                </CardFooter>
+              </Card>
             ))}
           </div>
         </div>
@@ -153,7 +195,7 @@ const CodePage = () => {
   );
 };
 
-export default CodePage;
+export default ImagePage;
 
 // Heading: This is a custom component from "@/components/Heading",
 // displaying a heading with an icon, title, and description.
