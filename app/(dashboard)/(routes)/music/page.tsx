@@ -1,6 +1,6 @@
 "use client";
 import Heading from "@/components/Heading";
-import { MessageSquare } from "lucide-react";
+import { Music } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -16,15 +16,10 @@ import { Empty } from "@/components/empty";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import OpenAI from "openai";
 import Loader from "@/components/loader";
-import { cn } from "@/lib/utils";
-import UserAvatar from "@/components/user-avatar";
-import BotAvatar from "@/components/bot-avatar";
 
-const ConverstationPage = () => {
+const MusicPage = () => {
   const router = useRouter();
-  const [messages, setMessages] = useState<
-    OpenAI.Chat.CreateChatCompletionRequestMessage[]
-  >([]);
+  const [music, setMusic] = useState<string>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,15 +31,9 @@ const ConverstationPage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // console.log(values);
     try {
-      const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = {
-        role: "user",
-        content: values.prompt,
-      };
-      const newMessages = [...messages, userMessage];
-      const response = await axios.post("/api/conversation", {
-        messages: newMessages,
-      });
-      setMessages((current) => [...current, userMessage, response.data]);
+      setMusic(undefined);
+      const response = await axios.post("/api/music", values);
+      setMusic(response.data.audio);
       form.reset();
     } catch (error: any) {
       // TODO:
@@ -57,11 +46,11 @@ const ConverstationPage = () => {
   return (
     <div>
       <Heading
-        title="Converstaion"
-        description="Our Advanced Converstaion model"
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
+        title="Music Generation"
+        description="Generate music form prompt"
+        icon={Music}
+        iconColor="text-green-500"
+        bgColor="bg-green-500/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -79,7 +68,6 @@ const ConverstationPage = () => {
                 grid
                  grid-cols-12
                   gap-2
-
                 "
             >
               <FormField
@@ -88,9 +76,9 @@ const ConverstationPage = () => {
                   <FormItem className=" col-span-12 lg:col-span-10 ">
                     <FormControl className="m-0 p-0 ">
                       <Input
-                        className="border focus-within:bg-slate-200 outline-none focus-visible:outline-non focus-visible:ring-slate-200  px-2 bg-slate-200"
+                        className=" border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="How do I use tailwindcss "
+                        placeholder="meditation music"
                         {...field}
                       />
                     </FormControl>
@@ -112,33 +100,22 @@ const ConverstationPage = () => {
               <Loader />
             </div>
           )}
-          {messages.length === 0 && !isLoading && (
-            <Empty label="There is no Conversation here" />
+          {!music && !isLoading && (
+            <Empty label="There is no Music generated here" />
           )}
 
-          <div className="flex flex-col-reverse gap-y-r">
-            {messages.map((message) => (
-              <div
-                key={message.role}
-                className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  message.role === "user"
-                    ? "bg-white border border-black/10"
-                    : "bg-muted "
-                )}
-              >
-                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm">{message.content}</p>
-              </div>
-            ))}
-          </div>
+          {music && (
+            <audio controls className=" mt-4 w-full  ">
+              <source src={music} />
+            </audio>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default ConverstationPage;
+export default MusicPage;
 
 // Heading: This is a custom component from "@/components/Heading",
 // displaying a heading with an icon, title, and description.
