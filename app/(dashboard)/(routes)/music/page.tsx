@@ -76,7 +76,7 @@ const MusicPage = () => {
                   <FormItem className=" col-span-12 lg:col-span-10 ">
                     <FormControl className="m-0 p-0 ">
                       <Input
-                        className=" border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        className="  bg-slate-200  outline-none focus-visible:ring-offset-slate-200 focus-visible:ring-slate-200"
                         disabled={isLoading}
                         placeholder="meditation music"
                         {...field}
@@ -86,7 +86,7 @@ const MusicPage = () => {
                 )}
               />
               <Button
-                className=" col-span-12 lg:col-span-2 bg-violet-800 hover:bg-violet-900 w-full "
+                className=" col-span-12 lg:col-span-2 bg-slate-700 hover:bg-slate-900 w-full "
                 disabled={isLoading}
               >
                 Generate

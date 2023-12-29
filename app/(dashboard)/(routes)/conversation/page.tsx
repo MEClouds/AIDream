@@ -88,7 +88,7 @@ const ConverstationPage = () => {
                   <FormItem className=" col-span-12 lg:col-span-10 ">
                     <FormControl className="m-0 p-0 ">
                       <Input
-                        className="border focus-within:bg-slate-200 outline-none focus-visible:outline-non focus-visible:ring-slate-200  px-2 bg-slate-200"
+                        className=" border-slate-200 outline-none focus-visible:ring-offset-slate-200 focus-visible:ring-slate-200  bg-slate-200"
                         disabled={isLoading}
                         placeholder="How do I use tailwindcss "
                         {...field}
@@ -98,7 +98,7 @@ const ConverstationPage = () => {
                 )}
               />
               <Button
-                className=" col-span-12 lg:col-span-2 bg-violet-800 hover:bg-violet-900 w-full "
+                className=" col-span-12 lg:col-span-2 bg-slate-700 hover:bg-slate-900 w-full "
                 disabled={isLoading}
               >
                 Generate
@@ -121,7 +121,7 @@ const ConverstationPage = () => {
               <div
                 key={message.role}
                 className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
+                  "p-8 w-full mt-1 flex items-start gap-x-8 rounded-lg",
                   message.role === "user"
                     ? "bg-white border border-black/10"
                     : "bg-muted "

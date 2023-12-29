@@ -5,7 +5,7 @@ import React from "react";
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="h-full relative">
-      <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:insert-y-0 z-[80] bg-blue-950">
+      <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:insert-y-0 z-[80] bg-slate-800">
         <div className=" text-cyan-100 ">
           <Sidebar />
         </div>
