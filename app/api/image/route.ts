@@ -1,5 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { checkUseLimit, increaseLimit } from "@/lib/use-limit";
+
 // import { Configuration, OpenAIApi } from "openai";
 
 // const configuration = new Configuration({
@@ -38,11 +40,16 @@ export async function POST(req: Request) {
     //   model: "gpt-3.5-turbo",
     //   messages,
     // });
+    const freeTrial = await checkUseLimit();
+    if (!freeTrial) {
+      return new NextResponse("Your free trial has expired.", { status: 403 });
+    }
     const response = await openai.images.generate({
       prompt,
       n: parseInt(amount, 10),
       size: resolution,
     });
+    await increaseLimit();
     return NextResponse.json(response.data);
   } catch (error) {
     console.log("[IMAGE_ERROR]", error);
