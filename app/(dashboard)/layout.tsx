@@ -1,13 +1,15 @@
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+import { getLimitCount } from "@/lib/use-limit";
 import React from "react";
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+  const limitCount = await getLimitCount();
   return (
     <div className="h-full relative">
       <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:insert-y-0 z-[80] bg-slate-800">
         <div className=" text-cyan-100 ">
-          <Sidebar />
+          <Sidebar limitCount={limitCount} />
         </div>
       </div>
       <main className="md:pl-72 h-full bg-slate-200">
