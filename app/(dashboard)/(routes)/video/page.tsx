@@ -16,8 +16,10 @@ import { Empty } from "@/components/empty";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import OpenAI from "openai";
 import Loader from "@/components/loader";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const VideoPage = () => {
+  const ProModal = useProModal();
   const router = useRouter();
   const [video, setVideo] = useState<string>();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -37,6 +39,9 @@ const VideoPage = () => {
       form.reset();
     } catch (error: any) {
       // TODO:
+      if (error?.response?.status === 403) {
+        ProModal.onOpen();
+      }
       console.log(error);
     } finally {
       router.refresh;

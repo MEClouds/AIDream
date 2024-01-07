@@ -4,11 +4,13 @@ import { FREE_TIER_COUNTS } from "@/constants";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { Progress } from "./ui/progress";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface FreeCounterProps {
   limitCount: number;
 }
 const FreeCounter = ({ limitCount = 0 }: FreeCounterProps) => {
+  const ProModal = useProModal();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -19,7 +21,7 @@ const FreeCounter = ({ limitCount = 0 }: FreeCounterProps) => {
   }
 
   return (
-    <div className="px-3 ">
+    <div className="px-3">
       <Card className=" bg-white/10 border-0">
         <CardContent className="py-5">
           <div className=" text-center text-sm text-white mb-3 space-y-2 ">
@@ -31,7 +33,11 @@ const FreeCounter = ({ limitCount = 0 }: FreeCounterProps) => {
               value={(limitCount / FREE_TIER_COUNTS) * 100}
             />
           </div>
-          <Button variant="ultimate" className="w-full">
+          <Button
+            onClick={ProModal.onOpen}
+            variant="ultimate"
+            className="w-full"
+          >
             Upgrade now <Zap className="w-3 h-3 mx-2 fill-white " />
           </Button>
         </CardContent>
