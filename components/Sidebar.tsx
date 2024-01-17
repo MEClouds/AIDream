@@ -66,9 +66,13 @@ const routes = [
 
 interface SidebarProps {
   limitCount: number;
+  isSubscribed: boolean;
 }
 
-const Sidebar = ({ limitCount = 0 }: SidebarProps) => {
+const Sidebar = ({
+  limitCount = 0,
+  isSubscribed: isSubscribed = false,
+}: SidebarProps) => {
   const pathname = usePathname();
   return (
     <div className=" space-y-4 py-4 flex flex-col h-full bg-slate-800 text-white">
@@ -101,7 +105,7 @@ const Sidebar = ({ limitCount = 0 }: SidebarProps) => {
           ))}
         </div>
       </div>
-      <FreeCounter limitCount={limitCount} />
+      <FreeCounter isSubscribed={isSubscribed} limitCount={limitCount} />
     </div>
   );
 };

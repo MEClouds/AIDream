@@ -10,6 +10,7 @@ import { checkUseLimit, increaseLimit } from "@/lib/use-limit";
 // const openai = new OpenAIApi(configuration);
 
 import OpenAI from "openai";
+import { checkSubscription } from "@/lib/subscription";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // This is also the default, can be omitted
@@ -41,7 +42,8 @@ export async function POST(req: Request) {
     //   messages,
     // });
     const freeTrial = await checkUseLimit();
-    if (!freeTrial) {
+    const isSubscribed = await checkSubscription();
+    if (!freeTrial && !isSubscribed) {
       return new NextResponse("Your free trial has expired.", { status: 403 });
     }
     const response = await openai.images.generate({
@@ -49,7 +51,9 @@ export async function POST(req: Request) {
       n: parseInt(amount, 10),
       size: resolution,
     });
-    await increaseLimit();
+    if (!isSubscribed) {
+      await increaseLimit();
+    }
     return NextResponse.json(response.data);
   } catch (error) {
     console.log("[IMAGE_ERROR]", error);

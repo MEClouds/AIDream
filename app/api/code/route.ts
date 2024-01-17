@@ -10,6 +10,7 @@ import { checkUseLimit, increaseLimit } from "@/lib/use-limit";
 // const openai = new OpenAIApi(configuration);
 
 import OpenAI from "openai";
+import { checkSubscription } from "@/lib/subscription";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // This is also the default, can be omitted
@@ -35,7 +36,8 @@ export async function POST(req: Request) {
       return new NextResponse("Messages are required", { status: 400 });
     }
     const freeTrial = await checkUseLimit();
-    if (!freeTrial) {
+    const isSubscribed = await checkSubscription();
+    if (!freeTrial && !isSubscribed) {
       return new NextResponse("Your free trial has expired.", { status: 403 });
     }
 
@@ -49,7 +51,9 @@ export async function POST(req: Request) {
       messages: [instructionMessage, ...messages],
     });
 
-    await increaseLimit();
+    if (!isSubscribed) {
+      await increaseLimit();
+    }
     return NextResponse.json(response.choices[0].message);
   } catch (error) {
     console.log("[CODE_ERROR]", error);

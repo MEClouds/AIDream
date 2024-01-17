@@ -8,8 +8,13 @@ import { useProModal } from "@/hooks/use-pro-modal";
 
 interface FreeCounterProps {
   limitCount: number;
+  isSubscribed: boolean;
 }
-const FreeCounter = ({ limitCount = 0 }: FreeCounterProps) => {
+
+const FreeCounter = ({
+  limitCount = 0,
+  isSubscribed = false,
+}: FreeCounterProps) => {
   const ProModal = useProModal();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -17,6 +22,9 @@ const FreeCounter = ({ limitCount = 0 }: FreeCounterProps) => {
   }, []);
 
   if (!mounted) {
+    return null;
+  }
+  if (isSubscribed) {
     return null;
   }
 

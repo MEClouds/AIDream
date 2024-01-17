@@ -1,15 +1,17 @@
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+import { checkSubscription } from "@/lib/subscription";
 import { getLimitCount } from "@/lib/use-limit";
 import React from "react";
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const limitCount = await getLimitCount();
+  const isSubscribed = await checkSubscription();
   return (
     <div className="h-full relative">
       <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:insert-y-0  bg-slate-800">
         <div className=" h-full text-cyan-100 ">
-          <Sidebar limitCount={limitCount} />
+          <Sidebar isSubscribed={isSubscribed} limitCount={limitCount} />
         </div>
       </div>
       <main className="md:pl-72 h-full bg-slate-200">

@@ -7,8 +7,12 @@ import Sidebar from "./Sidebar";
 
 interface MobileSidebarProps {
   LimitCount: number;
+  isSubscribed: boolean;
 }
-const MobileSidebar = ({ LimitCount }: MobileSidebarProps) => {
+const MobileSidebar = ({
+  LimitCount,
+  isSubscribed = false,
+}: MobileSidebarProps) => {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
@@ -24,7 +28,7 @@ const MobileSidebar = ({ LimitCount }: MobileSidebarProps) => {
         </Button>
       </SheetTrigger>
       <SheetContent side={"left"} className="p-0">
-        <Sidebar limitCount={LimitCount} />
+        <Sidebar isSubscribed={isSubscribed} limitCount={LimitCount} />
       </SheetContent>
     </Sheet>
   );

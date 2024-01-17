@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
+import FormatResponse from "@/components/formatResponse";
 
 const ConverstationPage = () => {
   const ProModal = useProModal();
@@ -133,7 +134,9 @@ const ConverstationPage = () => {
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm">{message.content}</p>
+                <div>
+                  <FormatResponse content={message.content} />
+                </div>
               </div>
             ))}
           </div>
