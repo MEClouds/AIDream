@@ -17,6 +17,7 @@ import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import OpenAI from "openai";
 import Loader from "@/components/loader";
 import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 
 const VideoPage = () => {
   const ProModal = useProModal();
@@ -41,6 +42,8 @@ const VideoPage = () => {
       // TODO:
       if (error?.response?.status === 403) {
         ProModal.onOpen();
+      } else {
+        toast.error("Something went wrong");
       }
       console.log(error);
     } finally {

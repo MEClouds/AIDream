@@ -21,6 +21,7 @@ import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import FormatResponse from "@/components/formatResponse";
+import toast from "react-hot-toast";
 
 const ConverstationPage = () => {
   const ProModal = useProModal();
@@ -53,6 +54,8 @@ const ConverstationPage = () => {
       // TODO:
       if (error?.response?.status === 403) {
         ProModal.onOpen();
+      } else {
+        toast.error("Something went wrong");
       }
       console.log(error);
     } finally {
