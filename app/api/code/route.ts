@@ -16,7 +16,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // This is also the default, can be omitted
 });
 
-const instructionMessage: OpenAI.ChatCompletionMessage = {
+const instructionMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = {
   role: "system",
   content:
     "You are the best code generator , You must answer in markdown code snippets only, For explanations use code comments",

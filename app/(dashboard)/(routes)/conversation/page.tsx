@@ -138,7 +138,7 @@ const ConverstationPage = () => {
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 <div>
-                  <FormatResponse content={message.content} />
+                  <FormatResponse content={message.content?.toString()!} />
                 </div>
               </div>
             ))}

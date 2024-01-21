@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 const CodePage = () => {
   const ProModal = useProModal();
   const router = useRouter();
+
   const [messages, setMessages] = useState<
     OpenAI.Chat.CreateChatCompletionRequestMessage[]
   >([]);
@@ -148,9 +149,9 @@ const CodePage = () => {
                       />
                     ),
                   }}
-                  className="tex-sm overflow-hidden leading-7"
+                  className="text-sm overflow-hidden leading-7"
                 >
-                  {message.content}
+                  {message.content?.toString()}
                 </ReactMarkdown>
               </div>
             ))}
