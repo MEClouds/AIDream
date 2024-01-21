@@ -13,9 +13,9 @@ const Navbar = async () => {
     <div className="flex items-center p-4">
       <MobileSidebar isSubscribed={isSubscribed} LimitCount={LimitCount} />
       <div className="flex w-full justify-end">
-        <Button variant={"ghost"} className="mr-2">
+        {/* <Button variant={"ghost"} className="mr-2">
           Arabic
-        </Button>
+        </Button> */}
         <Button variant={"ghost"} className="mr-2">
           <UserButton afterSignOutUrl="/" />
         </Button>
