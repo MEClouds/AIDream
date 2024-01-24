@@ -2,6 +2,7 @@ import { checkSubscription } from "@/lib/subscription";
 import { checkUseLimit, increaseLimit } from "@/lib/use-limit";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { OpenAIStream, StreamingTextResponse } from "ai";
 
 // import { Configuration, OpenAIApi } from "openai";
 
@@ -12,6 +13,9 @@ import { NextResponse } from "next/server";
 
 import OpenAI from "openai";
 
+export const config = {
+  runtime: "edge",
+};
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // This is also the default, can be omitted
 });
@@ -45,12 +49,15 @@ export async function POST(req: Request) {
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages,
+      temperature: 0.7,
+      stream: true,
     });
     if (!isSubscribed) {
       await increaseLimit();
     }
+    const stream = OpenAIStream(response);
 
-    return NextResponse.json(response.choices[0].message);
+    return new StreamingTextResponse(stream);
   } catch (error) {
     console.log("[CONVERSTION_ERROR]", error);
     return new NextResponse("Intternal error", { status: 500 });

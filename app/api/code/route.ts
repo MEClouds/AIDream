@@ -1,17 +1,14 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import { checkUseLimit, increaseLimit } from "@/lib/use-limit";
-
-// import { Configuration, OpenAIApi } from "openai";
-
-// const configuration = new Configuration({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
-// const openai = new OpenAIApi(configuration);
+import { OpenAIStream, StreamingTextResponse } from "ai";
 
 import OpenAI from "openai";
 import { checkSubscription } from "@/lib/subscription";
 
+export const config = {
+  runtime: "edge",
+};
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // This is also the default, can be omitted
 });
@@ -41,20 +38,18 @@ export async function POST(req: Request) {
       return new NextResponse("Your free trial has expired.", { status: 403 });
     }
 
-    //  old openai v3
-    // const response = await openai.createChatCompletion({
-    //   model: "gpt-3.5-turbo",
-    //   messages,
-    // });
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [instructionMessage, ...messages],
+      temperature: 0.7,
+      stream: true,
     });
 
     if (!isSubscribed) {
       await increaseLimit();
     }
-    return NextResponse.json(response.choices[0].message);
+    const stream = OpenAIStream(response);
+    return new StreamingTextResponse(stream);
   } catch (error) {
     console.log("[CODE_ERROR]", error);
     return new NextResponse("Intternal error", { status: 500 });
