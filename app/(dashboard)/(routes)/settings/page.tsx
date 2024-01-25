@@ -11,9 +11,8 @@ const SettingPage = async () => {
       <Heading
         title="Settings"
         description="Mange account settings."
-        icon={Settings}
-        iconColor="text-white-600"
-        bgColor="bg=white-600/10"
+        emj="⚙️"
+        bgColor="bg-gray-500/10"
       />
       <div className="px-4 lg:px-8 space-y-3 ">
         <div className="text-muted-forground text-sm">

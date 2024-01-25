@@ -23,7 +23,14 @@ const ConverstationPage = () => {
   const ProModal = useProModal();
   const router = useRouter();
   const { messages, input, isLoading, handleInputChange, handleSubmit, error } =
-    useChat({ api: "/api/conversation" });
+    useChat({
+      api: "/api/code",
+      onResponse(response) {
+        if (response.status === 403) {
+          ProModal.onOpen();
+        }
+      },
+    });
 
   // Define the function to handle form submission
   const onSubmit = async (
@@ -34,11 +41,6 @@ const ConverstationPage = () => {
       formSchema.parse(values);
       // Send user message to OpenAI using the useChat hook
       await handleSubmit(e);
-
-      // Check for specific error conditions
-      if (error?.message.includes("Your free trial has expired.")) {
-        ProModal.onOpen();
-      }
 
       // Perform additional actions after successful submission if needed
     } catch (error) {
@@ -63,9 +65,8 @@ const ConverstationPage = () => {
       <Heading
         title="Conversation"
         description="Our Advanced AI Chatbot model"
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
+        emj="💭"
+        bgColor="bg-gray-500/10"
       />
 
       <div className="px-4 lg:px-8">
@@ -125,9 +126,8 @@ const ConverstationPage = () => {
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 <div>
                   {/* Display the message content */}
-                  <div id="response">
-                    <FormatResponse content={message.content} />
-                  </div>
+
+                  <FormatResponse content={message.content} />
                 </div>
               </div>
             ))}

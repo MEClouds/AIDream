@@ -1,52 +1,46 @@
 "use client";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import {
-  ArrowRight,
-  Code,
-  ImageIcon,
-  MessageSquare,
-  Music,
-  Video,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const tools = [
   {
     label: "Conversation",
-    icon: MessageSquare,
+    emj: "💭",
     color: "text-violet-500",
-    bgColor: "bg-violet-500/10",
+    bgColor: "bg-gray-500/10",
     href: "/conversation",
   },
   {
-    label: "code",
-    icon: Code,
-    color: "text-cyan-500",
-    bgColor: "bg-cyan-500/10",
+    label: "code Generation",
+    emj: "👨‍💻",
+    color: "text-gray-500",
+    bgColor: "bg-gray-500/10",
     href: "/code",
   },
   {
     label: "Image Generation",
-    icon: ImageIcon,
+    emj: "🖌️",
     color: "text-pink-500",
-    bgColor: "bg-pink-500/10",
+    bgColor: "bg-gray-500/10",
     href: "/image",
   },
   {
     label: "Music Generation",
-    icon: Music,
+    emj: "🎶",
     color: "text-green-500",
-    bgColor: "bg-green-500/10",
+    bgColor: "bg-gray-500/10",
     href: "/music",
   },
 
   {
     label: "Video Generation",
-    icon: Video,
+    emj: "🎞️",
+
     color: "text-orange-500",
-    bgColor: "bg-orange-500/10",
+    bgColor: "bg-gray-500/10",
     href: "/video",
   },
 ];
@@ -74,7 +68,7 @@ const DashboardPage = () => {
           >
             <div className="flex items-center gap-x-4">
               <div className={cn("p-2  w-fit rounded-md ", tool.bgColor)}>
-                <tool.icon className={cn("w-8 h-8", tool.color)} />
+                <div className="w-8 h-8 text-2xl text-center">{tool.emj}</div>
               </div>
               <div className="font-semibold">{tool.label}</div>
             </div>

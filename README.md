@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI DREAM
+
+AI DREAM is a cutting-edge SaaS platform that leverages the power of artificial intelligence to offer a rich array of services. From intelligent AI chatbots to image, code, music, and video generation, AI DREAM is designed to unlock creativity and streamline tasks.
+
+## Features
+
+- **AI Chatbot:** Engage users with dynamic and intelligent conversation experiences.
+- **Image Generation:** Transform text prompts into stunning visual representations.
+- **Code Generation:** Simplify coding tasks with AI-generated code snippets.
+- **Music Generation:** Unleash creativity by generating unique musical compositions.
+- **Video Generation:** Create captivating videos effortlessly through AI-driven processes.
+
+## Usage
+
+1. **Sign Up:** Create an account on AI DREAM to access a diverse range of AI services.
+2. **Free Tier:** Every new user enjoys a complimentary 5-generation free tier for each service.
+3. **Upgrade:** For extended usage, upgrade to a premium plan to continue exploring and utilizing AI capabilities.
+
+## Development Status
+
+AI DREAM is actively under development to enhance the user interface and incorporate additional features. We are continually collaborating with various AI service providers to expand the array of offerings.
 
 ## Getting Started
 
-First, run the development server:
+To set up AI DREAM locally, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the repository:**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   git clone https://github.com/MEClouds/AIDream.git
+   cd ai-dream
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Create a .env file:**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+   Copy the following environment variables into a `.env` file at the root of your project:
 
-## Learn More
+   ```env
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+   CLERK_SECRET_KEY=
 
-To learn more about Next.js, take a look at the following resources:
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   OPENAI_API_KEY=
+   REPLICATE_API_TOKEN=
+   # https://www.prisma.io/blog/database-access-on-the-edge-8F0t1s1BqOJE
+   DATABASE_URL=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   STRIPE_API_KEY=
+   STRIPE_WEBHOOK_SECRET=
 
-## Deploy on Vercel
+   NEXT_PUBLIC_APP_URL="http://localhost:3000"
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Setup Prisma:**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   Ensure Prisma is installed globally:
+
+   ```bash
+   npm install -g prisma
+   ```
+
+   Add a MySQL database (e.g., using PlanetScale). Then, run the following commands:
+
+   ```bash
+   npx prisma db push
+   ```
+
+4. **Start the app:**
+
+   ```bash
+   npm run dev
+   ```
+
+   This will launch the application locally. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to access AI DREAM.
+
+Now, you're ready to explore and develop with AI DREAM on your local environment.
+
+## Contributing
+
+We welcome contributions! If you have ideas, bug reports, or feature requests, feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Feel free to customize this template further based on your specific project details and requirements.

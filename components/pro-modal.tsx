@@ -9,53 +9,49 @@ import {
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { Badge } from "./ui/badge";
-import {
-  ArrowRight,
-  Check,
-  Code,
-  ImageIcon,
-  MessageSquare,
-  Music,
-  Video,
-  Zap,
-} from "lucide-react";
+import { Check, Zap } from "lucide-react";
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import axios from "axios";
 import toast from "react-hot-toast";
-
 const tools = [
   {
     label: "Conversation",
-    icon: MessageSquare,
+    emj: "💭",
     color: "text-violet-500",
-    bgColor: "bg-violet-500/10",
+    bgColor: "bg-gray-500/10",
+    href: "/conversation",
   },
   {
-    label: "code",
-    icon: Code,
-    color: "text-cyan-500",
-    bgColor: "bg-cyan-500/10",
+    label: "code Generation",
+    emj: "👨‍💻",
+    color: "text-gray-500",
+    bgColor: "bg-gray-500/10",
+    href: "/code",
   },
   {
     label: "Image Generation",
-    icon: ImageIcon,
+    emj: "🖌️",
     color: "text-pink-500",
-    bgColor: "bg-pink-500/10",
+    bgColor: "bg-gray-500/10",
+    href: "/image",
   },
   {
     label: "Music Generation",
-    icon: Music,
+    emj: "🎶",
     color: "text-green-500",
-    bgColor: "bg-green-500/10",
+    bgColor: "bg-gray-500/10",
+    href: "/music",
   },
 
   {
     label: "Video Generation",
-    icon: Video,
+    emj: "🎞️",
+
     color: "text-orange-500",
-    bgColor: "bg-orange-500/10",
+    bgColor: "bg-gray-500/10",
+    href: "/video",
   },
 ];
 const ProModal = () => {
@@ -93,7 +89,7 @@ const ProModal = () => {
               >
                 <div className="flex items-center gap-x-3 ">
                   <div className={cn("p-2 w-fit rounded-md", tool.bgColor)}>
-                    <tool.icon className={cn("w-5 h-5", tool.color)} />
+                    <div className="w-5 h-5 text-l">{tool.emj}</div>
                   </div>
                   <div className=" font-semibold text-sm">{tool.label}</div>
                 </div>

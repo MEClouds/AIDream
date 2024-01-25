@@ -13,11 +13,9 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Empty } from "@/components/empty";
-import OpenAI from "openai";
+
 import Loader from "@/components/loader";
-import { cn } from "@/lib/utils";
-import UserAvatar from "@/components/user-avatar";
-import BotAvatar from "@/components/bot-avatar";
+
 import { Select, SelectContent, SelectItem } from "@/components/ui/select";
 import { SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import { Card, CardFooter } from "@/components/ui/card";
@@ -68,9 +66,8 @@ const ImagePage = () => {
       <Heading
         title="Image Generation"
         description="Prompt to Image"
-        icon={ImageIcon}
-        iconColor="text-pink-500"
-        bgColor="bg-pink-500/10"
+        emj="🖌️"
+        bgColor="bg-gray-500/10"
       />
       <div className="px-4 lg:px-8">
         <div>

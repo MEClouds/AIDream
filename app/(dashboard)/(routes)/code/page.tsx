@@ -1,6 +1,5 @@
 "use client";
 import Heading from "@/components/Heading";
-import { Code } from "lucide-react";
 import React from "react";
 
 import * as z from "zod";
@@ -24,7 +23,14 @@ const CodePage = () => {
   const ProModal = useProModal();
   const router = useRouter();
   const { messages, input, isLoading, error, handleInputChange, handleSubmit } =
-    useChat({ api: "/api/code" });
+    useChat({
+      api: "/api/code",
+      onResponse(response) {
+        if (response.status === 403) {
+          ProModal.onOpen();
+        }
+      },
+    });
 
   const onSubmit = async (
     values: z.infer<typeof formSchema>,
@@ -32,12 +38,8 @@ const CodePage = () => {
   ) => {
     try {
       formSchema.parse(values);
-
       //Send user message to OpenAI using the useChat hook
       handleSubmit(e);
-      if (error?.message.includes("Your free trial has expired.")) {
-        ProModal.onOpen();
-      }
     } catch (error) {
       if (error instanceof ZodError) {
         // Handle Zod validation errors
@@ -56,9 +58,8 @@ const CodePage = () => {
       <Heading
         title="Code Generation"
         description="Advanced Code Generation form input text"
-        icon={Code}
-        iconColor="text-sky-500"
-        bgColor="bg-sky-500/10"
+        emj="👨‍💻"
+        bgColor="bg-gray-500/10"
       />
       <div className="px-4 lg:px-8">
         {/* Form for code generation */}
@@ -91,7 +92,7 @@ const CodePage = () => {
           </Button>
         </form>
         {/* Section for displaying generated code and messages */}
-        <div className="space-y-4 mt-4">
+        <div className="space-y-2 mt-4">
           {isLoading && (
             <div className="p-8 rounded-lg w-full flex items-center bg-muted justify-center">
               <Loader />
@@ -100,7 +101,7 @@ const CodePage = () => {
           {messages.length === 0 && !isLoading && (
             <Empty label="There is no code generated here" />
           )}
-          <div className="flex flex-col-reverse gap-y-r">
+          <div className="flex flex-col-reverse gap-y-r ">
             {/* Displaying user and bot messages with generated code */}
             {messages.map((message) => (
               <div
@@ -113,27 +114,26 @@ const CodePage = () => {
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <div id="response">
-                  {/* Displaying generated code using ReactMarkdown */}
-                  <ReactMarkdown
-                    components={{
-                      pre: ({ node, ...props }) => (
-                        <div className="overflow-auto w-full m-y bg-cyan-800/10 p-3 rounded-lg">
-                          <pre {...props} />
-                        </div>
-                      ),
-                      code: ({ node, ...props }) => (
-                        <code
-                          className="bg-cyan-700/10 rounded-lg p-1"
-                          {...props}
-                        />
-                      ),
-                    }}
-                    className="text-sm overflow-hidden leading-7"
-                  >
-                    {message.content}
-                  </ReactMarkdown>
-                </div>
+
+                {/* Displaying generated code using ReactMarkdown */}
+                <ReactMarkdown
+                  components={{
+                    pre: ({ node, ...props }) => (
+                      <div className="overflow-auto  m-y bg-cyan-800/10 p-3 rounded-lg">
+                        <pre {...props} />
+                      </div>
+                    ),
+                    code: ({ node, ...props }) => (
+                      <code
+                        className="bg-cyan-700/10 rounded-lg p-1"
+                        {...props}
+                      />
+                    ),
+                  }}
+                  className="text-sm overflow-hidden leading-7"
+                >
+                  {message.content}
+                </ReactMarkdown>
               </div>
             ))}
           </div>

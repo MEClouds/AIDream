@@ -1,15 +1,5 @@
 "use client";
 import { cn } from "@/lib/utils";
-import {
-  Code,
-  ImageIcon,
-  LayoutDashboard,
-  MessageSquare,
-  Music,
-  MusicIcon,
-  Settings,
-  VideoIcon,
-} from "lucide-react";
 import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,44 +11,44 @@ const montserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 const routes = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    emj: "🎛️",
     href: "/dashboard",
     color: "text-stone-300",
   },
   {
     label: "Conversation",
-    icon: MessageSquare,
+    emj: "💭",
     href: "/conversation",
     color: "text-violet-500",
   },
   {
     label: "Code Generation",
-    icon: Code,
+    emj: "👨‍💻",
     href: "/code",
     color: "text-sky-500",
   },
   {
     label: "Image Generation",
-    icon: ImageIcon,
+    emj: "🖌️",
     href: "/image",
     color: "text-pink-700",
   },
   {
     label: "Music Generation",
-    icon: Music,
+    emj: "🎶",
     href: "/music",
     color: "text-green-500",
   },
   {
     label: "Video Generation",
-    icon: VideoIcon,
+    emj: "🎞️",
     href: "/video",
     color: "text-orange-600",
   },
 
   {
     label: "Setting",
-    icon: Settings,
+    emj: "⚙️",
     href: "/settings",
     // color: "text-white-500",
   },
@@ -98,7 +88,9 @@ const Sidebar = ({
               key={route.href}
             >
               <div className="flex items-center flex-1">
-                <route.icon className={cn("h-5 w-5 mr-3", route.color)} />
+                <div className={"h-6 w-6 mx-2 text-center text-xl"}>
+                  {route.emj}
+                </div>
                 {route.label}
               </div>
             </Link>

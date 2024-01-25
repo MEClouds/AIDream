@@ -1,6 +1,6 @@
 "use client";
 import Heading from "@/components/Heading";
-import { Music } from "lucide-react";
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -13,8 +13,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Empty } from "@/components/empty";
-import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
-import OpenAI from "openai";
+
 import Loader from "@/components/loader";
 import { useProModal } from "@/hooks/use-pro-modal";
 import toast from "react-hot-toast";
@@ -56,9 +55,8 @@ const MusicPage = () => {
       <Heading
         title="Music Generation"
         description="Generate music form prompt"
-        icon={Music}
-        iconColor="text-green-500"
-        bgColor="bg-green-500/10"
+        emj="🎶"
+        bgColor="bg-gray-500/10"
       />
       <div className="px-4 lg:px-8">
         <div>
