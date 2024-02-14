@@ -86,7 +86,3 @@ We welcome contributions! If you have ideas, bug reports, or feature requests, f
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
----
-
-Feel free to customize this template further based on your specific project details and requirements.
