@@ -1,6 +1,6 @@
 "use client";
 import Heading from "@/components/Heading";
-import React from "react";
+import React, { useState } from "react";
 
 import * as z from "zod";
 import { formSchema } from "./constants";
@@ -18,10 +18,12 @@ import BotAvatar from "@/components/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import toast from "react-hot-toast";
 import { useChat } from "ai/react";
+import { Copy } from "lucide-react";
 
 const CodePage = () => {
   const ProModal = useProModal();
   const router = useRouter();
+
   const { messages, input, isLoading, error, handleInputChange, handleSubmit } =
     useChat({
       api: "/api/code",
@@ -51,6 +53,11 @@ const CodePage = () => {
     } finally {
       router.refresh();
     }
+  };
+
+  const onCopy = (description: string) => {
+    navigator.clipboard.writeText(description);
+    toast.success("Message Copied to clipboard");
   };
   // Rendering the CodePage component
   return (
@@ -107,7 +114,7 @@ const CodePage = () => {
               <div
                 key={message.role}
                 className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
+                  "p-8 w-full flex items-start gap-x-8 rounded-lg ",
                   message.role === "user"
                     ? "bg-white my-1 border border-black/10"
                     : "bg-muted "
@@ -134,6 +141,16 @@ const CodePage = () => {
                 >
                   {message.content}
                 </ReactMarkdown>
+                {!isLoading && (
+                  <Button
+                    className="ml-auto"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onCopy(message.content)}
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                )}
               </div>
             ))}
           </div>

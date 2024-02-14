@@ -12,7 +12,7 @@ import FormatResponse from "@/components/formatResponse";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Empty } from "@/components/empty";
-import { MessageSquare } from "lucide-react";
+import { Copy, MessageSquare } from "lucide-react";
 import * as z from "zod";
 import Heading from "@/components/Heading";
 import { ZodError } from "zod";
@@ -58,7 +58,10 @@ const ConverstationPage = () => {
       router.refresh();
     }
   };
-
+  const onCopy = (description: string) => {
+    navigator.clipboard.writeText(description);
+    toast.success("Message Copied to clipboard");
+  };
   // Render the component
   return (
     <div>
@@ -129,6 +132,16 @@ const ConverstationPage = () => {
 
                   <FormatResponse content={message.content} />
                 </div>
+                {!isLoading && (
+                  <Button
+                    className="ml-auto"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onCopy(message.content)}
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                )}
               </div>
             ))}
           </div>
