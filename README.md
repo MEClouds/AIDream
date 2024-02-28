@@ -2,6 +2,9 @@
 
 AI DREAM is a cutting-edge SaaS platform that leverages the power of artificial intelligence to offer a rich array of services. From intelligent AI chatbots to image, code, music, and video generation, AI DREAM is designed to unlock creativity and streamline tasks.
 
+![image](https://github.com/MEClouds/AIDream/assets/84941140/412bbbf8-beb4-45e5-a856-0745790a6f6f)
+
+
 ## Features
 
 - **AI Chatbot:** Engage users with dynamic and intelligent conversation experiences.
